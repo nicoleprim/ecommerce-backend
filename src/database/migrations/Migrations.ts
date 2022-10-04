@@ -36,7 +36,7 @@ class Migrations extends BaseDatabase {
 
             const productsFile = await ConvertFile.convertFileCsvToJson('./src/database/migrations/products.csv')
 
-            const arrayErrors = []
+            const arrayErrors: any = []
 
             const arraySuccess: any = []
 
