@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from "dotenv"
 import { productRouter } from './router/ProductRouter'
+import { orderRouter } from './router/OrderRouter'
 
 dotenv.config()
 
@@ -14,3 +15,4 @@ app.listen(process.env.PORT || 3003, () => {
 })
 
 app.use("/products", productRouter)
+app.use("/orders", orderRouter)

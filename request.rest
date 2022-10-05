@@ -1,4 +1,12 @@
 ### 1 - busca todos os produtos
 GET http://localhost:3003/products
 
-### 2 - 
+### 2 - criar pedido
+POST http://localhost:3003/orders/createorder
+Content-Type: application/json
+
+{
+"userName": "Theo", 
+"deliveryDate": "22/10/2022", 
+"products": "um produto"
+}
