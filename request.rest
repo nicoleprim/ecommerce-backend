@@ -1,1 +1,4 @@
+### 1 - busca todos os produtos
 GET http://localhost:3003/products
+
+### 2 - 
