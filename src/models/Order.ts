@@ -1,7 +1,9 @@
-export interface addedProducts {
+export interface IaddedProducts {
     id: number
+    name: string
     qty: number
     price: number
+    order_id: string
 }
 
 export class Order {
@@ -9,7 +11,7 @@ export class Order {
         private id: string,
         private userName: string,
         private deliveryDate: Date,
-        private products: addedProducts[]
+        private productsOrder: IaddedProducts[]
     ) {}
 
     public getId = () => {
@@ -24,7 +26,19 @@ export class Order {
         return this.deliveryDate
     }
 
-    public getProducts = () => {
-        return this.products
+    public getProductsOrder = () => {
+        return this.productsOrder
+    }
+
+    public setProductsOrder = (newProductsOrder: IaddedProducts[]) => {
+        this.productsOrder = newProductsOrder
+    }
+
+    public addProductsOrder = (newProductsOrder: IaddedProducts) => {
+        this.productsOrder.push(newProductsOrder)
+    }
+
+    public removeProductsOrder = (idToRemove: number) => {
+        return this.productsOrder.filter(addedProducts => addedProducts.id !== idToRemove)
     }
 }
