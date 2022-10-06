@@ -1,15 +1,15 @@
 export interface IOrderItem {
     id: string,
-    product_name: string,
+    name: string,
     price: number,
-    quantity: number,
+    qty: number,
     order_id: string
 }
 
 export interface IOrderItemDB {
     product_id: number,
-    qty: number,
-    order_id: string
+    order_id: string,
+    qty: number
 }
 
 export interface IOrderResume {
@@ -37,10 +37,9 @@ export class Order {
 
     private calculateTotal = () => {
         const total = this.productsOrder.reduce(
-            (acc, product) => acc + (product.price * product.quantity),
+            (acc, product) => acc + (product.price * product.qty),
             0
         )
-
         return total
     }
 
@@ -62,6 +61,7 @@ export class Order {
 
     public setProductsOrder = (newProductsOrder: IOrderItem[]) => {
         this.productsOrder = newProductsOrder
+        this.total = this.calculateTotal()
     }
 
     public addProductsOrder = (newProductsOrder: IOrderItem) => {
@@ -90,4 +90,8 @@ export interface ICreateOrderInputDTO {
 export interface ICreateOrderOutputDTO {
     message: string,
     order: IOrderResume
+}
+
+export interface IGetOrdersOutputDTO {
+    orders: IOrderResume[]
 }

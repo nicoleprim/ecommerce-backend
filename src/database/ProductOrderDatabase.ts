@@ -9,4 +9,13 @@ export class ProductOrderDatabase extends BaseDatabase {
             .connection(ProductOrderDatabase.TABLE_PRODUCTS_ORDERS)
             .insert(orderItem)
     }
+
+    public getOrderItem = async (orderId: string): Promise<IOrderItemDB[]> => {
+        const result: IOrderItemDB[] = await BaseDatabase
+            .connection(ProductOrderDatabase.TABLE_PRODUCTS_ORDERS)
+            .select()
+            .where({ order_id: orderId })
+
+        return result
+    }
 }

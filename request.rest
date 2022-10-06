@@ -6,8 +6,8 @@ POST http://localhost:3003/orders/createorder
 Content-Type: application/json
 
 {
-    "userName": "Lua",
-    "deliveryDate": "2022/10/10",
+    "userName": "Rafa",
+    "deliveryDate": "2022/10/12",
     "products": [
         {
             "name": "BEBIDA ENERGÉTICA VIBE 2L",
@@ -15,3 +15,6 @@ Content-Type: application/json
         }
     ]
 }
+
+### 3 - busca todos os pedidos
+GET http://localhost:3003/orders

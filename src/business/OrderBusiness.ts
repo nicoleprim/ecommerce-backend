@@ -1,9 +1,8 @@
 import { OrderDatabase } from "../database/OrderDatabase";
 import { ProductOrderDatabase } from "../database/ProductOrderDatabase";
 import { ParamsError } from "../errors/ParamsError";
-import { ICreateOrderInputDTO, ICreateOrderOutputDTO, IOrderItemDB } from "../models/Order";
+import { ICreateOrderInputDTO, ICreateOrderOutputDTO, IGetOrdersOutputDTO, IOrderItemDB, Order } from "../models/Order";
 import { IdGenerator } from "../services/IdGenerator";
-import moment from 'moment';
 
 export class OrderBusiness {
     constructor(
@@ -100,6 +99,54 @@ export class OrderBusiness {
                 products: productsVerify,
                 total
             }
+        }
+
+        return response
+    }
+
+    public getOrders = async (): Promise<IGetOrdersOutputDTO> => {
+
+        const ordersDB = await this.orderDatabase.getOrders()
+
+        const orders: Order[] = []
+
+        for (let orderDB of ordersDB) {
+            const order = new Order(
+                orderDB.id,
+                orderDB.user_name,
+                orderDB.delivery_date,
+                []
+            )
+            
+            const orderItemsDB: any = await 
+                this.productOrderDatabase.getOrderItem(order.getId())
+            //console.log(orderItemsDB)
+            for (let orderItemDB of orderItemsDB) {
+                const price = await this.orderDatabase.getPriceById(orderItemDB.product_id)
+                const name = await this.orderDatabase.getNameById(orderItemDB.product_id)
+                orderItemDB.price = price
+                orderItemDB.name = name
+            }
+            //console.log(orderItemsDB)
+            order.setProductsOrder(orderItemsDB)
+
+            orders.push(order)
+            console.log(order.getTotal())
+            //console.log(orders)
+        }
+
+        const response: IGetOrdersOutputDTO = {
+            orders: orders.map((order) => ({
+                id: order.getId(),
+                userName: order.getUserName(),
+                deliveryDate: order.getDeliveryDate(),
+                products: order.getProductsOrder().map((item) => ({
+                    name: item.name,
+                    quantity: item.qty,
+                    price: item.price
+                })),
+                total: order.getTotal()
+            }))
         }
 
         return response
