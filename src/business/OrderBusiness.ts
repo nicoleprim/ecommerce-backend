@@ -1,8 +1,9 @@
 import { OrderDatabase } from "../database/OrderDatabase";
 import { ProductOrderDatabase } from "../database/ProductOrderDatabase";
 import { ParamsError } from "../errors/ParamsError";
-import { ICreateOrderInputDTO, ICreateOrderOutputDTO, IOrderItemDB, Order } from "../models/Order";
+import { ICreateOrderInputDTO, ICreateOrderOutputDTO, IOrderItemDB } from "../models/Order";
 import { IdGenerator } from "../services/IdGenerator";
+import moment from 'moment';
 
 export class OrderBusiness {
     constructor(
@@ -25,6 +26,18 @@ export class OrderBusiness {
 
         if (typeof userName !== "string" || typeof deliveryDate !== "string") {
             throw new ParamsError("Parâmetro 'nome' e/ou 'data de entrega' inválidos")
+        }
+
+        const dateVerify = new Date(deliveryDate)
+        const difDays = Math.abs(new Date().getTime() - dateVerify.getTime())
+        const days = Math.ceil (difDays / (86400000))
+
+        if (days <= 3) {
+            throw new ParamsError("Conseguimos realizar a entrega a partir de 03 dias após a realização do pedido")
+        }
+
+        if (dateVerify < new Date()) {
+            throw new ParamsError("Informe uma data futura")
         }
 
         const productsVerify = products.map((product) => {

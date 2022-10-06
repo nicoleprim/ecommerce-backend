@@ -15,14 +15,6 @@ export class OrderDatabase extends BaseDatabase {
             })
     }
 
-/* 
-    public insertOrder = async (order: Order) => {
-        const orderDB = this.toOrderDBModel(order)
-
-        await BaseDatabase.connection(OrderDatabase.TABLE_ORDERS)
-            .insert(orderDB)
-    } */
-
     public getQuantity = async (name: string): Promise<number> => {
         const result: any[] = await BaseDatabase
             .connection(ProductDatabase.TABLE_PRODUCTS)

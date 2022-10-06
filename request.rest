@@ -6,12 +6,12 @@ POST http://localhost:3003/orders/createorder
 Content-Type: application/json
 
 {
-    "userName": "Theodoro",
+    "userName": "Lua",
     "deliveryDate": "2022/10/10",
     "products": [
         {
-            "name": "FILME DE PVC PRATSY 15M",
-            "quantity": 3
+            "name": "BEBIDA ENERGÉTICA VIBE 2L",
+            "quantity": 5
         }
     ]
 }
