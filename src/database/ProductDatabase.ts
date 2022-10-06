@@ -23,6 +23,13 @@ export class ProductDatabase extends BaseDatabase {
         return result
     }
 
+    public updateStock = async (productId: number, productQty: number) => {
+        await BaseDatabase
+        .connection(ProductDatabase.TABLE_PRODUCTS)
+        .decrement('qty_stock', productQty)
+        .where({id: productId})
+    }
+
 
 
 }

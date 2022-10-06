@@ -1,4 +1,5 @@
 import { OrderDatabase } from "../database/OrderDatabase";
+import { ProductDatabase } from "../database/ProductDatabase";
 import { ProductOrderDatabase } from "../database/ProductOrderDatabase";
 import { ParamsError } from "../errors/ParamsError";
 import { ICreateOrderInputDTO, ICreateOrderOutputDTO, IGetOrdersOutputDTO, IOrderItemDB, Order } from "../models/Order";
@@ -8,6 +9,7 @@ export class OrderBusiness {
     constructor(
         private orderDatabase: OrderDatabase,
         private productOrderDatabase: ProductOrderDatabase,
+        private productDatabase: ProductDatabase,
         private idGenerator: IdGenerator
     ) { }
 
@@ -90,6 +92,10 @@ export class OrderBusiness {
             0
         )
 
+        for (let product of productsVerify) {
+            await this.productDatabase.updateStock(product.id, product.quantity)
+        }
+
         const response: ICreateOrderOutputDTO = {
             message: "Pedido realizado com sucesso",
             order: {
@@ -120,19 +126,17 @@ export class OrderBusiness {
             
             const orderItemsDB: any = await 
                 this.productOrderDatabase.getOrderItem(order.getId())
-            //console.log(orderItemsDB)
+
             for (let orderItemDB of orderItemsDB) {
                 const price = await this.orderDatabase.getPriceById(orderItemDB.product_id)
                 const name = await this.orderDatabase.getNameById(orderItemDB.product_id)
                 orderItemDB.price = price
                 orderItemDB.name = name
             }
-            //console.log(orderItemsDB)
+
             order.setProductsOrder(orderItemsDB)
 
             orders.push(order)
-            console.log(order.getTotal())
-            //console.log(orders)
         }
 
         const response: IGetOrdersOutputDTO = {
