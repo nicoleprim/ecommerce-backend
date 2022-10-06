@@ -1,6 +1,7 @@
 import { BaseDatabase } from "../BaseDatabase";
 import { OrderDatabase } from "../OrderDatabase";
 import { ProductDatabase } from "../ProductDatabase";
+import { ProductOrderDatabase } from "../ProductOrderDatabase";
 import { ConvertFile } from "./data";
 
 class Migrations extends BaseDatabase {
@@ -23,7 +24,7 @@ class Migrations extends BaseDatabase {
                 user_name VARCHAR(255) NOT NULL,
                 delivery_date DATE NOT NULL
                 );
-                CREATE TABLE IF NOT EXISTS products_orders_shopper(
+                CREATE TABLE IF NOT EXISTS ${ProductOrderDatabase.TABLE_PRODUCTS_ORDERS}(
                 product_id INT NOT NULL,
                 order_id VARCHAR(255) NOT NULL,
                 qty INT NOT NULL,

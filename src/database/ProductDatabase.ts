@@ -1,4 +1,3 @@
-import { IaddedProducts } from "../models/Order";
 import { IProductDB, Product } from "../models/Product";
 import { BaseDatabase } from "./BaseDatabase";
 
@@ -24,12 +23,6 @@ export class ProductDatabase extends BaseDatabase {
         return result
     }
 
-    public selectQtyStock = async (products: IaddedProducts[]) => {
-        const result = await BaseDatabase
-        .connection(ProductDatabase.TABLE_PRODUCTS)
-        .select()
-
-    }
 
 
 }

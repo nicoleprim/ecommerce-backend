@@ -1,17 +1,18 @@
 import { OrderDatabase } from "../database/OrderDatabase";
-import { ProductDatabase } from "../database/ProductDatabase";
+import { ProductOrderDatabase } from "../database/ProductOrderDatabase";
 import { ParamsError } from "../errors/ParamsError";
-import { IProductOrderInputDTO, IProductOrderOutputDTO, Order } from "../models/Order";
+import { ICreateOrderInputDTO, ICreateOrderOutputDTO, IOrderItemDB, Order } from "../models/Order";
 import { IdGenerator } from "../services/IdGenerator";
 
 export class OrderBusiness {
-    constructor (
+    constructor(
         private orderDatabase: OrderDatabase,
-        private idGenerator: IdGenerator,
-        private productDatabase: ProductDatabase
-    ) {}
+        private productOrderDatabase: ProductOrderDatabase,
+        private idGenerator: IdGenerator
+    ) { }
 
-    public createOrder = async (input: IProductOrderInputDTO): Promise<IProductOrderOutputDTO> => {
+    public createOrder = async (input: ICreateOrderInputDTO): Promise<ICreateOrderOutputDTO> => {
+
         const { userName, deliveryDate, products } = input
 
         if (!userName || !deliveryDate) {
@@ -26,37 +27,66 @@ export class OrderBusiness {
             throw new ParamsError("Parâmetro 'nome' e/ou 'data de entrega' inválidos")
         }
 
-        for (let product of products) {
-            if (product.qty) {
-                throw new ParamsError("A quantidade mínima de pedido para cada produto deve ser de 1 item")
+        const productsVerify = products.map((product) => {
+            if (product.quantity <= 0) {
+                throw new ParamsError("Quantidade de produtos inválida. A quantidade mínima é 1")
+            }
+
+            return {
+                ...product,
+                id: 0,
+                price: 0
+            }
+        })
+
+        for (let product of productsVerify) {
+            const qty = await this.orderDatabase.getQuantity(product.name)
+
+            if (qty <= 0 || !qty) {
+                throw new Error("Não existe produto em estoque")
             }
         }
 
-/*         const checkStock = await this.productDatabase.selectQtyStock(products)
+        for (let product of productsVerify) {
+            const price = await this.orderDatabase.getPrice(product.name)
 
-        const showAlreadyExists = await this.showDatabase.findShowByDate(startsAtDate)
-        
-        if (showAlreadyExists) {
-            throw new ConflictError("Esse dia já possui show")
-        } */
+            product.price = price
+        }
 
-        const id = this.idGenerator.generate()
+        const orderId = this.idGenerator.generate()
 
-        const newOrder = new Order(
-            id,
-            userName,
-            deliveryDate,
-            products
+        await this.orderDatabase.createOrder(orderId, userName, deliveryDate)
+
+        for (let product of productsVerify) {
+            const idProduct = await this.orderDatabase.getId(product.name)
+
+            product.id = idProduct
+        }
+
+        for (let product of productsVerify) {
+            const orderItem: IOrderItemDB = {
+                product_id: product.id,
+                order_id: orderId,
+                qty: product.quantity
+            }
+
+            await this.productOrderDatabase.insertItemOnOrder(orderItem)
+        }
+
+        const total = productsVerify.reduce(
+            (acc, product) => (acc + (product.price * product.quantity)),
+            0
         )
 
-        await this.orderDatabase.insertOrder(newOrder)
-
-        const response: IProductOrderOutputDTO = {
+        const response: ICreateOrderOutputDTO = {
             message: "Pedido realizado com sucesso",
-            id,
-            userName,
-            deliveryDate,
-            products
+            order: {
+                id: orderId,
+                userName,
+                deliveryDate,
+                products: productsVerify,
+                total
+            }
         }
 
         return response

@@ -6,7 +6,12 @@ POST http://localhost:3003/orders/createorder
 Content-Type: application/json
 
 {
-"userName": "Theo", 
-"deliveryDate": "22/10/2022", 
-"products": "um produto"
+    "userName": "Theodoro",
+    "deliveryDate": "2022/10/10",
+    "products": [
+        {
+            "name": "FILME DE PVC PRATSY 15M",
+            "quantity": 3
+        }
+    ]
 }
