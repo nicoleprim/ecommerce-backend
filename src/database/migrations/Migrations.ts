@@ -2,7 +2,7 @@ import { BaseDatabase } from "../BaseDatabase";
 import { OrderDatabase } from "../OrderDatabase";
 import { ProductDatabase } from "../ProductDatabase";
 import { ProductOrderDatabase } from "../ProductOrderDatabase";
-import { ConvertFile } from "./data";
+import { ConvertFile, orders, productOrders } from "./data";
 
 class Migrations extends BaseDatabase {
     execute = async () => {
@@ -48,12 +48,20 @@ class Migrations extends BaseDatabase {
                 }
             })
 
-            console.log("Os produtos não puderam ser inseridos. Por favor, verifique os dados informados", arrayErrors)
+            console.log("Os produtos a seguir não puderam ser inseridos. Por favor, verifique os dados informados", arrayErrors)
 
             const insertData = async () => {
                 await BaseDatabase
                     .connection(ProductDatabase.TABLE_PRODUCTS)
                     .insert(arraySuccess)
+
+                await BaseDatabase
+                    .connection(OrderDatabase.TABLE_ORDERS)
+                    .insert(orders)
+
+                await BaseDatabase
+                    .connection(ProductOrderDatabase.TABLE_PRODUCTS_ORDERS)
+                    .insert(productOrders)
             }
 
             console.log("Creating tables...")
@@ -71,6 +79,7 @@ class Migrations extends BaseDatabase {
             if (error instanceof Error) {
                 console.log(error.message)
             }
+            
         } finally {
             console.log("Ending connection...")
             BaseDatabase.connection.destroy()

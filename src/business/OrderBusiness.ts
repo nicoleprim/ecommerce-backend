@@ -17,16 +17,12 @@ export class OrderBusiness {
 
         const { userName, deliveryDate, products } = input
 
-        if (!userName || !deliveryDate) {
-            throw new ParamsError("Preencha todos os dados solicitados: 'nome' e 'data de entrega'")
-        }
-
-        if (!products.length) {
-            throw new ParamsError("Você precisa inserir pelo menos um produto para concluir o pedido")
+        if (!userName || !deliveryDate || !products.length) {
+            throw new ParamsError("Preencha todos os dados solicitados: 'nome' e 'data de entrega' e insira pelo menos um produto no carrinho")
         }
 
         if (typeof userName !== "string") {
-            throw new ParamsError("Parâmetro 'nome' e/ou 'data de entrega' inválidos")
+            throw new ParamsError("Parâmetro 'nome' inválido")
         }
 
         const dateVerify = new Date(deliveryDate)
@@ -118,7 +114,7 @@ export class OrderBusiness {
 
             const orderItemsDB: any = await
                 this.productOrderDatabase.getOrderItem(order.getId())
-
+                console.log(orderItemsDB)
             for (let orderItemDB of orderItemsDB) {
                 const price = await this.orderDatabase.getPriceById(orderItemDB.product_id)
                 const name = await this.orderDatabase.getNameById(orderItemDB.product_id)
