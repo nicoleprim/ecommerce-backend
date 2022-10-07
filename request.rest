@@ -1,1 +1,20 @@
+### 1 - busca todos os produtos
 GET http://localhost:3003/products
+
+### 2 - criar pedido
+POST http://localhost:3003/orders/createorder
+Content-Type: application/json
+
+{
+    "userName": "Le",
+    "deliveryDate": "2022/12/",
+    "products": [
+        {
+            "name": "BEBIDA ENERGÉTICA VIBE 2L",
+            "quantity": 14
+        }
+    ]
+}
+
+### 3 - busca todos os pedidos
+GET http://localhost:3003/orders

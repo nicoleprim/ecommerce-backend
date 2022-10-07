@@ -31,9 +31,9 @@
     },
     {
         "id": 23,
-        "name": "ÁGUA MINERAL BONAFONT SEM GÁS 1",
-        "price": "5L",
-        "qty_stock": 2.39
+        "name": "ÁGUA MINERAL BONAFONT SEM GÁS 1 5L",
+        "price": 2.39,
+        "qty_stock": 909
     },
     {
         "id": 24,
@@ -49,15 +49,15 @@
     },
     {
         "id": 26,
-        "name": "ROLO DE PAPEL ALUMÍNIO WYDA 30CMX7",
-        "price": "5M",
-        "qty_stock": 5.79
+        "name": "ROLO DE PAPEL ALUMÍNIO WYDA 30CMX7 5M",
+        "price": 5.79,
+        "qty_stock": 660
     },
     {
         "id": 27,
-        "name": "ÁGUA MINERAL SEM GÁS MINALBA 1",
-        "price": "5L",
-        "qty_stock": 2.29
+        "name": "ÁGUA MINERAL SEM GÁS MINALBA 1 5L",
+        "price": 2.29,
+        "qty_stock": 910
     },
     {
         "id": 28,
@@ -73,9 +73,9 @@
     },
     {
         "id": 33,
-        "name": "GUARDANAPO FOLHA DUPLA SNOB 23",
-        "price": "5X23",
-        "qty_stock": "5CM C/ 50UN"
+        "name": "GUARDANAPO FOLHA DUPLA SNOB 23 5X23 5CM C/ 50UN",
+        "price": 4.25,
+        "qty_stock": 411
     },
     {
         "id": 34,
@@ -253,9 +253,9 @@
     },
     {
         "id": 87,
-        "name": "REFRIGERANTE H2OH! LIMÃO 1",
-        "price": "5L",
-        "qty_stock": 6.99
+        "name": "REFRIGERANTE H2OH! LIMÃO 1 5L",
+        "price": 6.99,
+        "qty_stock": 921
     },
     {
         "id": 88,
@@ -265,9 +265,9 @@
     },
     {
         "id": 92,
-        "name": "ÁGUA MINERAL PRATA SEM GÁS 1",
-        "price": "5L",
-        "qty_stock": 3.09
+        "name": "ÁGUA MINERAL PRATA SEM GÁS 1 5L",
+        "price": 3.09,
+        "qty_stock": 172
     },
     {
         "id": 94,
@@ -283,9 +283,9 @@
     },
     {
         "id": 96,
-        "name": "ÁGUA MINERAL SEM GÁS CRYSTAL PET 1",
-        "price": "5L",
-        "qty_stock": 2.59
+        "name": "ÁGUA MINERAL SEM GÁS CRYSTAL PET 1 5L",
+        "price": 2.59,
+        "qty_stock": 173
     },
     {
         "id": 97,

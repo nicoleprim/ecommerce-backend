@@ -15,10 +15,21 @@ export class ProductDatabase extends BaseDatabase {
         return productDB
     }
 
-    public insertProduct = async (product: Product) => {
-        const productDB = this.toProductDBModel(product)
+    public selectAllProducts = async (): Promise<IProductDB[]> => {
+        const result: IProductDB[] = await BaseDatabase
+            .connection(ProductDatabase.TABLE_PRODUCTS)
+            .select()
 
-        await BaseDatabase.connection(ProductDatabase.TABLE_PRODUCTS)
-            .insert(productDB)
+        return result
     }
+
+    public updateStock = async (productId: number, productQty: number) => {
+        await BaseDatabase
+        .connection(ProductDatabase.TABLE_PRODUCTS)
+        .decrement('qty_stock', productQty)
+        .where({id: productId})
+    }
+
+
+
 }

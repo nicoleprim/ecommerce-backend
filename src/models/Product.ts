@@ -29,3 +29,12 @@ export class Product {
         return this.qty_stock
     }
 }
+
+export interface IGetProductsOutputDTO {
+    message: string,
+    products: {
+        name: string,
+        price: number,
+        qty_stock: number
+    }[]
+}
