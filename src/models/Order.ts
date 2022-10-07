@@ -15,7 +15,7 @@ export interface IOrderItemDB {
 export interface IOrderResume {
     id: string,
     userName: string,
-    deliveryDate: string
+    deliveryDate: Date,
     products: {
         name: string,
         quantity: number,
@@ -29,7 +29,7 @@ export class Order {
     constructor(
         private id: string,
         private userName: string,
-        private deliveryDate: string,
+        private deliveryDate: Date,
         private productsOrder: IOrderItem[]
     ) {
         this.total = this.calculateTotal()
@@ -80,7 +80,7 @@ export class Order {
 
 export interface ICreateOrderInputDTO {
     userName: string
-    deliveryDate: string
+    deliveryDate: Date
     products: {
         name: string,
         quantity: number

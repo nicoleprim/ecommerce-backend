@@ -6,12 +6,12 @@ POST http://localhost:3003/orders/createorder
 Content-Type: application/json
 
 {
-    "userName": "Lara",
-    "deliveryDate": "2022/12/12",
+    "userName": "Le",
+    "deliveryDate": "2022/12/",
     "products": [
         {
-            "name": "DESODORANTE AEROSOL NIVEA SENSITIVE SEM PERFUME 150ML",
-            "quantity": 70
+            "name": "BEBIDA ENERGÉTICA VIBE 2L",
+            "quantity": 14
         }
     ]
 }

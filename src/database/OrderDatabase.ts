@@ -5,7 +5,7 @@ export class OrderDatabase extends BaseDatabase {
     public static TABLE_ORDERS = "orders_shopper"
 
 
-    public createOrder = async (orderId: string, userName: string, deliveryDate: string): Promise<void> => {
+    public createOrder = async (orderId: string, userName: string, deliveryDate: Date): Promise<void> => {
         await BaseDatabase
             .connection(OrderDatabase.TABLE_ORDERS)
             .insert({

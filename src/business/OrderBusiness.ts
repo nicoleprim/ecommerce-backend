@@ -25,20 +25,16 @@ export class OrderBusiness {
             throw new ParamsError("Você precisa inserir pelo menos um produto para concluir o pedido")
         }
 
-        if (typeof userName !== "string" || typeof deliveryDate !== "string") {
+        if (typeof userName !== "string") {
             throw new ParamsError("Parâmetro 'nome' e/ou 'data de entrega' inválidos")
         }
 
         const dateVerify = new Date(deliveryDate)
         const difDays = Math.abs(new Date().getTime() - dateVerify.getTime())
-        const days = Math.ceil (difDays / (86400000))
+        const days = Math.ceil(difDays / (86400000))
 
-        if (days <= 3) {
-            throw new ParamsError("Conseguimos realizar a entrega a partir de 03 dias após a realização do pedido")
-        }
-
-        if (dateVerify < new Date()) {
-            throw new ParamsError("Informe uma data futura")
+        if (days <= 3 || dateVerify < new Date()) {
+            throw new ParamsError("Informe uma data futura. Conseguimos realizar a entrega a partir de 03 dias após a realização do pedido")
         }
 
         const productsVerify = products.map((product) => {
@@ -54,6 +50,14 @@ export class OrderBusiness {
         })
 
         for (let product of productsVerify) {
+            const price = await this.orderDatabase.getPrice(product.name)
+            const idProduct = await this.orderDatabase.getId(product.name)
+
+            product.price = price
+            product.id = idProduct
+        }
+
+        for (let product of productsVerify) {
             const qty = await this.orderDatabase.getQuantity(product.name)
 
             if (qty <= 0 || !qty) {
@@ -61,21 +65,9 @@ export class OrderBusiness {
             }
         }
 
-        for (let product of productsVerify) {
-            const price = await this.orderDatabase.getPrice(product.name)
-
-            product.price = price
-        }
-
         const orderId = this.idGenerator.generate()
 
         await this.orderDatabase.createOrder(orderId, userName, deliveryDate)
-
-        for (let product of productsVerify) {
-            const idProduct = await this.orderDatabase.getId(product.name)
-
-            product.id = idProduct
-        }
 
         for (let product of productsVerify) {
             const orderItem: IOrderItemDB = {
@@ -123,8 +115,8 @@ export class OrderBusiness {
                 orderDB.delivery_date,
                 []
             )
-            
-            const orderItemsDB: any = await 
+
+            const orderItemsDB: any = await
                 this.productOrderDatabase.getOrderItem(order.getId())
 
             for (let orderItemDB of orderItemsDB) {
