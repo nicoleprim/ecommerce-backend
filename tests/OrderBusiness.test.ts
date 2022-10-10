@@ -39,13 +39,57 @@ describe("Testando a OrderBusiness", () => {
         expect(response.order.userName).toBe("Theodoro")
     })
 
-    test("Erro se não informado nome, data e sem inserção de produtos", async () => {
+    test("Erro se não for informado nome", async () => {
         expect.assertions(2)
 
         try {
             const input = {
                 userName: "",
+                deliveryDate: new Date('2022/12/09'),
+                products: [{
+                    name: "nome do produto",
+                    quantity: 2
+                }]
+            }
+            await orderBusiness.createOrder(input)
+
+        } catch (error) {
+            if (error instanceof BaseError) {
+                expect(error.statusCode).toBe(400)
+                expect(error.message).toBe("É obrigatório o preenchimento do campo 'nome'")
+            }
+        }
+    })
+
+    test("Erro se não for informado data de entrega", async () => {
+        expect.assertions(0)
+
+        try {
+            const input = {
+                userName: "nome do cliente",
                 deliveryDate: new Date(''),
+                products: [{
+                    name: "nome do produto",
+                    quantity: 2
+                }]
+            }
+            await orderBusiness.createOrder(input)
+
+        } catch (error) {
+            if (error instanceof BaseError) {
+                expect(error.statusCode).toBe(400)
+                expect(error.message).toBe("É obrigatório o preenchimento do campo 'data de entrega'")
+            }
+        }
+    })
+
+    test("Erro se não for adicionado nenhum produto", async () => {
+        expect.assertions(2)
+
+        try {
+            const input = {
+                userName: "nome do cliente",
+                deliveryDate: new Date('2022/12/09'),
                 products: []
             }
             await orderBusiness.createOrder(input)
@@ -53,7 +97,7 @@ describe("Testando a OrderBusiness", () => {
         } catch (error) {
             if (error instanceof BaseError) {
                 expect(error.statusCode).toBe(400)
-                expect(error.message).toBe("Preencha todos os dados solicitados: 'nome' e 'data de entrega' e insira pelo menos um produto no carrinho")
+                expect(error.message).toBe("Insira pelo menos um produto no carrinho para prosseguir")
             }
         }
     })
