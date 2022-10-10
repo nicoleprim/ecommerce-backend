@@ -17,8 +17,16 @@ export class OrderBusiness {
 
         const { userName, deliveryDate, products } = input
 
-        if (!userName || !deliveryDate || !products.length) {
-            throw new ParamsError("Preencha todos os dados solicitados: 'nome' e 'data de entrega' e insira pelo menos um produto no carrinho")
+        if (!userName) {
+            throw new ParamsError("É obrigatório o preenchimento do campo 'nome'")
+        }
+
+        if (!deliveryDate) {
+            throw new ParamsError("É obrigatório o preenchimento do campo 'data de entrega'")
+        }
+
+        if (!products.length) {
+            throw new ParamsError("Insira pelo menos um produto no carrinho para prosseguir")
         }
 
         if (typeof userName !== "string") {
@@ -114,7 +122,7 @@ export class OrderBusiness {
 
             const orderItemsDB: any = await
                 this.productOrderDatabase.getOrderItem(order.getId())
-                console.log(orderItemsDB)
+
             for (let orderItemDB of orderItemsDB) {
                 const price = await this.orderDatabase.getPriceById(orderItemDB.product_id)
                 const name = await this.orderDatabase.getNameById(orderItemDB.product_id)
