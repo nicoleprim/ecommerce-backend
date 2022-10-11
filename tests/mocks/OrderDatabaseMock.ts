@@ -8,20 +8,20 @@ export class OrderDatabaseMock extends BaseDatabase {
 
     }
 
-    public getQuantity = async (name: string): Promise<number> => {
+    public getQuantity = async (id: number): Promise<number> => {
 
-        if (name == "BEBIDA ENERGÉTICA VIBE 2L") return 659
-        if (name == "NÉCTAR MAGUARY DE MARACUJÁ 1L") return 672
-        if (name == "PRATO DESCARTÁVEL COPOBRAS 21CM") return 913
+        if (id == 18) return 659
+        if (id == 94) return 672
+        if (id == 43) return 913
 
         return 0
     }
 
-    public getPrice = async (name: string): Promise<number> => {
+    public getPrice = async (id: number): Promise<number> => {
 
-        if (name == "BEBIDA ENERGÉTICA VIBE 2L") return 8.99
-        if (name == "NÉCTAR MAGUARY DE MARACUJÁ 1L") return 4.49
-        if (name == "PRATO DESCARTÁVEL COPOBRAS 21CM") return 3.79
+        if (id == 18) return 8.99
+        if (id == 94) return 4.49
+        if (id == 43) return 3.79
 
         return 0
     }

@@ -54,18 +54,18 @@ export class OrderBusiness {
         })
 
         for (let product of productsVerify) {
-            const price = await this.orderDatabase.getPrice(product.name)
             const idProduct = await this.orderDatabase.getId(product.name)
+            const price = await this.orderDatabase.getPrice(product.id)
 
-            product.price = price
             product.id = idProduct
+            product.price = price
         }
 
         for (let product of productsVerify) {
-            const qty = await this.orderDatabase.getQuantity(product.name)
+            const qty = await this.orderDatabase.getQuantity(product.id)
 
-            if (qty <= 0 || !qty) {
-                throw new Error("Não existe produto em estoque")
+            if (qty < product.quantity || !qty) {
+               throw new Error(`Não existe produto em estoque. Temos ${qty} produtos em estoque`)
             }
         }
 
