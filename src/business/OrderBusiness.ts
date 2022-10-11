@@ -55,9 +55,13 @@ export class OrderBusiness {
 
         for (let product of productsVerify) {
             const idProduct = await this.orderDatabase.getId(product.name)
-            const price = await this.orderDatabase.getPrice(product.id)
 
             product.id = idProduct
+        }
+
+        for (let product of productsVerify) {
+            const price = await this.orderDatabase.getPrice(product.id)
+
             product.price = price
         }
 

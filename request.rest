@@ -7,11 +7,11 @@ Content-Type: application/json
 
 {
     "userName": "Le",
-    "deliveryDate": "2022/12/",
+    "deliveryDate": "2022/12/22",
     "products": [
         {
             "name": "BEBIDA ENERGÉTICA VIBE 2L",
-            "quantity": 14
+            "quantity": 1
         }
     ]
 }
