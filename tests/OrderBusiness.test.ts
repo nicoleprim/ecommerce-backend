@@ -61,27 +61,29 @@ describe("Testando a OrderBusiness", () => {
         }
     })
 
-    test("Erro se não for informado data de entrega", async () => {
-        expect.assertions(0)
+    test("Erro quando a quantidade solicitada for maior que a do estoque", async () => {
+        expect.assertions(2)
 
         try {
             const input = {
-                userName: "nome do cliente",
-                deliveryDate: new Date(''),
+                userName: "cliente",
+                deliveryDate: new Date('2022/10/20'),
                 products: [{
-                    name: "nome do produto",
-                    quantity: 2
+                    name:'DESODORANTE AEROSOL NIVEA BLACK&WHITE INVISIBLE MASCULINO 150ML',
+                    quantity: 180
                 }]
-            }
+            } as any
+
             await orderBusiness.createOrder(input)
 
         } catch (error) {
             if (error instanceof BaseError) {
                 expect(error.statusCode).toBe(400)
-                expect(error.message).toBe("É obrigatório o preenchimento do campo 'data de entrega'")
+                expect(error.message).toBe(`Não existe produto em estoque. Temos 0 produtos disponíveis para compra`)
             }
         }
     })
+
 
     test("Erro se não for adicionado nenhum produto", async () => {
         expect.assertions(2)
@@ -98,29 +100,6 @@ describe("Testando a OrderBusiness", () => {
             if (error instanceof BaseError) {
                 expect(error.statusCode).toBe(400)
                 expect(error.message).toBe("Insira pelo menos um produto no carrinho para prosseguir")
-            }
-        }
-    })
-
-    test("Erro quando a quantidade solicitada for maior que a do estoque", async () => {
-        expect.assertions(0)
-
-        try {
-            const input = {
-                userName: "cliente",
-                deliveryDate: '2022/10/20',
-                products: [{
-                    name:'DESODORANTE AEROSOL NIVEA BLACK&WHITE INVISIBLE MASCULINO 150ML',
-                    quantity: 180
-                }]
-            } as any
-
-            await orderBusiness.createOrder(input)
-
-        } catch (error) {
-            if (error instanceof BaseError) {
-                expect(error.statusCode).toBe(400)
-                expect(error.message).toBe(`Não existe produto em estoque. Temos 171 produtos em estoque`)
             }
         }
     })
