@@ -35,7 +35,7 @@ export class ProductDatabaseMock extends BaseDatabase {
                 id: 88,
                 name: 'DESODORANTE AEROSOL NIVEA BLACK&WHITE INVISIBLE MASCULINO 150ML',
                 price: 11.99,
-                qty_stock: 171
+                qty_stock: 0
             }
         ]
         return productsTest
@@ -45,4 +45,12 @@ export class ProductDatabaseMock extends BaseDatabase {
 
     }
 
+    public getProductById = async (id: number) => {
+        if (id === 18) return {
+            id: 18,
+            name: 'BEBIDA ENERGÉTICA VIBE 2L',
+            price: 8.99,
+            qty_stock: 659
+        }
+    }
 }

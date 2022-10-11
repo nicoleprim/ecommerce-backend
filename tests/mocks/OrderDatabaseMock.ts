@@ -8,24 +8,6 @@ export class OrderDatabaseMock extends BaseDatabase {
 
     }
 
-    public getQuantity = async (id: number): Promise<number> => {
-
-        if (id == 18) return 659
-        if (id == 94) return 672
-        if (id == 43) return 913
-
-        return 0
-    }
-
-    public getPrice = async (id: number): Promise<number> => {
-
-        if (id == 18) return 8.99
-        if (id == 94) return 4.49
-        if (id == 43) return 3.79
-
-        return 0
-    }
-
     public getPriceById = async (product_id: number): Promise<number> => {
 
         if (product_id == 18) return 8.99
@@ -36,21 +18,9 @@ export class OrderDatabaseMock extends BaseDatabase {
     }
 
     public getNameById = async (product_id: number) => {
-
-        if (product_id == 18) return "BEBIDA ENERGÉTICA VIBE 2L"
-        if (product_id == 94) return "NÉCTAR MAGUARY DE MARACUJÁ 1L"
-        if (product_id == 43) return "PRATO DESCARTÁVEL COPOBRAS 21CM"
-
-        return "Nome do Produto"
-    }
-
-    public getId = async (name: string): Promise<number> => {
-
-        if (name == "BEBIDA ENERGÉTICA VIBE 2L") return 18
-        if (name == "NÉCTAR MAGUARY DE MARACUJÁ 1L") return 94
-        if (name == "PRATO DESCARTÁVEL COPOBRAS 21CM") return 43
-
-        return 0
+        if (product_id == 18) return 'BEBIDA ENERGÉTICA VIBE 2L'
+        if (product_id == 94) return 'NÉCTAR MAGUARY DE MARACUJÁ 1L'
+        if (product_id == 43) return 'PRATO DESCARTÁVEL COPOBRAS 21CM'
     }
 
     public getOrders = async () => {

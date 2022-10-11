@@ -11,7 +11,6 @@ export class ProductDatabase extends BaseDatabase {
             price: product.getPrice(),
             qty_stock: product.getQtyStock()
         }
-
         return productDB
     }
 
@@ -30,6 +29,13 @@ export class ProductDatabase extends BaseDatabase {
         .where({id: productId})
     }
 
-
+    public getProductById = async (id: number) => {
+        const result = await BaseDatabase
+            .connection(ProductDatabase.TABLE_PRODUCTS)
+            .select("*")
+            .where({ id: id })
+    
+        return result[0]
+    }
 
 }

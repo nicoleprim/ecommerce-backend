@@ -41,68 +41,36 @@ export class OrderBusiness {
             throw new ParamsError("Informe uma data futura. Conseguimos realizar a entrega a partir de 03 dias após a realização do pedido")
         }
 
-        const productsVerify = products.map((product) => {
-            if (product.quantity <= 0) {
-                throw new ParamsError("Quantidade de produtos inválida. A quantidade mínima é 1")
+        for (let product of products) {
+
+            const getProduct = await this.productDatabase.getProductById(product.id)
+
+            if (getProduct.qty_stock <= 0) {
+                throw new ParamsError(`No momento não existe ${getProduct.name} em estoque`)
             }
 
-            return {
-                ...product,
-                id: 0,
-                price: 0
+            if (getProduct.qty_stock < product.quantity) {
+                throw new ParamsError(`Não existe a quantidade solicitada de ${getProduct.name} em estoque. Temos ${getProduct.qty_stock} produtos disponíveis para compra`)
             }
-        })
 
-        for (let product of productsVerify) {
-            const idProduct = await this.orderDatabase.getId(product.name)
-            const price = await this.orderDatabase.getPrice(product.id)
+            const orderId = this.idGenerator.generate()
 
-            product.id = idProduct
-            product.price = price
-        }
-
-        for (let product of productsVerify) {
-            const qty = await this.orderDatabase.getQuantity(product.id)
-
-            if (qty < product.quantity || !qty) {
-                throw new ParamsError(`Não existe produto em estoque. Temos ${qty} produtos disponíveis para compra`)
-            }
-        }
-
-        const orderId = this.idGenerator.generate()
-
-        await this.orderDatabase.createOrder(orderId, userName, deliveryDate)
-
-        for (let product of productsVerify) {
             const orderItem: IOrderItemDB = {
                 product_id: product.id,
                 order_id: orderId,
                 qty: product.quantity
             }
 
+            await this.orderDatabase.createOrder(orderId, userName, deliveryDate)
+
             await this.productOrderDatabase.insertItemOnOrder(orderItem)
-        }
 
-        const total = productsVerify.reduce(
-            (acc, product) => (acc + (product.price * product.quantity)),
-            0
-        )
-
-        for (let product of productsVerify) {
             await this.productDatabase.updateStock(product.id, product.quantity)
-        }
 
+        }
         const response: ICreateOrderOutputDTO = {
-            message: "Pedido realizado com sucesso",
-            order: {
-                id: orderId,
-                userName,
-                deliveryDate,
-                products: productsVerify,
-                total
-            }
+            message: "Pedido realizado com sucesso"
         }
-
         return response
     }
 

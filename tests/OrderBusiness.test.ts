@@ -1,3 +1,4 @@
+import { Console } from "console"
 import { OrderBusiness } from "../src/business/OrderBusiness"
 import { BaseError } from "../src/errors/BaseError"
 import { ICreateOrderInputDTO, Order } from "../src/models/Order"
@@ -26,7 +27,7 @@ describe("Testando a OrderBusiness", () => {
             deliveryDate: new Date("2022-10-20"),
             products: [
                 {
-                    name: "BEBIDA ENERGÉTICA VIBE 2L",
+                    id: 18,
                     quantity: 14
                 }
             ]
@@ -35,8 +36,6 @@ describe("Testando a OrderBusiness", () => {
         const response = await orderBusiness.createOrder(input)
 
         expect(response.message).toBe("Pedido realizado com sucesso")
-        expect(response.order.id).toBe("id-mock")
-        expect(response.order.userName).toBe("Theodoro")
     })
 
     test("Erro se não for informado nome", async () => {
@@ -47,7 +46,7 @@ describe("Testando a OrderBusiness", () => {
                 userName: "",
                 deliveryDate: new Date('2022/12/09'),
                 products: [{
-                    name: "nome do produto",
+                    id: 94,
                     quantity: 2
                 }]
             }
@@ -61,28 +60,6 @@ describe("Testando a OrderBusiness", () => {
         }
     })
 
-    test("Erro quando a quantidade solicitada for maior que a do estoque", async () => {
-        expect.assertions(2)
-
-        try {
-            const input = {
-                userName: "cliente",
-                deliveryDate: new Date('2022/10/20'),
-                products: [{
-                    name:'DESODORANTE AEROSOL NIVEA BLACK&WHITE INVISIBLE MASCULINO 150ML',
-                    quantity: 180
-                }]
-            } as any
-
-            await orderBusiness.createOrder(input)
-
-        } catch (error) {
-            if (error instanceof BaseError) {
-                expect(error.statusCode).toBe(400)
-                expect(error.message).toBe(`Não existe produto em estoque. Temos 0 produtos disponíveis para compra`)
-            }
-        }
-    })
 
 
     test("Erro se não for adicionado nenhum produto", async () => {
@@ -112,7 +89,7 @@ describe("Testando a OrderBusiness", () => {
                 userName: 123,
                 deliveryDate: '2022/10/10',
                 products: [{
-                    name:"nome do produto",
+                    id: 95,
                     quantity: 5
                 }]
             } as any
@@ -127,30 +104,7 @@ describe("Testando a OrderBusiness", () => {
         }
     })
 
-    test("Erro quando a quantidade de produtos for 0", async () => {
-        expect.assertions(2)
-
-        try {
-            const input = {
-                userName: "nome do usuário",
-                deliveryDate: '2022/10/20',
-                products: [{
-                    name:"nome do produto",
-                    quantity: 0
-                }]
-            } as any
-
-            await orderBusiness.createOrder(input)
-
-        } catch (error) {
-            if (error instanceof BaseError) {
-                expect(error.statusCode).toBe(400)
-                expect(error.message).toBe("Quantidade de produtos inválida. A quantidade mínima é 1")
-            }
-        }
-    })
-
-     test("Erro quando a data de entrega é menor que 03 dias da data do pedido", async () => {
+    test("Erro quando a data de entrega é menor que 03 dias da data do pedido", async () => {
         expect.assertions(2)
 
         try {
@@ -158,7 +112,7 @@ describe("Testando a OrderBusiness", () => {
                 userName: "nome do usuário",
                 deliveryDate: new Date('2022/10/07'),
                 products: [{
-                    name:"nome do produto",
+                    id: 95,
                     quantity: 5
                 }]
             } as any
@@ -171,6 +125,6 @@ describe("Testando a OrderBusiness", () => {
                 expect(error.message).toBe("Informe uma data futura. Conseguimos realizar a entrega a partir de 03 dias após a realização do pedido")
             }
         }
-    }) 
+    })
 
 })
