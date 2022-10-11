@@ -15,24 +15,6 @@ export class OrderDatabase extends BaseDatabase {
             })
     }
 
-    public getQuantity = async (id: number): Promise<number> => {
-        const result: any[] = await BaseDatabase
-            .connection(ProductDatabase.TABLE_PRODUCTS)
-            .select("qty_stock")
-            .where({ id: id })
-    
-        return result[0].qty_stock as number
-    }
-
-    public getPrice = async (id: number): Promise<number> => {
-        const result: any[] = await BaseDatabase
-            .connection(ProductDatabase.TABLE_PRODUCTS)
-            .select("price")
-            .where({ id: id })
-    
-        return result[0].price as number
-    }
-
     public getPriceById = async (product_id: number): Promise<number> => {
         const result: any[] = await BaseDatabase
             .connection(ProductDatabase.TABLE_PRODUCTS)
@@ -51,15 +33,6 @@ export class OrderDatabase extends BaseDatabase {
         return result[0].name
     }
 
-    public getId = async (name: string): Promise<number> => {
-        const result: any[] = await BaseDatabase
-            .connection(ProductDatabase.TABLE_PRODUCTS)
-            .select("id")
-            .where({ name: name })
-    
-        return result[0].id as number
-    }
-
     public getOrders = async () => {
         const result = await BaseDatabase
             .connection(OrderDatabase.TABLE_ORDERS)
@@ -67,6 +40,4 @@ export class OrderDatabase extends BaseDatabase {
 
         return result
     }
-
-
 }

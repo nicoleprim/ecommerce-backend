@@ -33,6 +33,7 @@ export class Product {
 export interface IGetProductsOutputDTO {
     message: string,
     products: {
+        id: number,
         name: string,
         price: number,
         qty_stock: number

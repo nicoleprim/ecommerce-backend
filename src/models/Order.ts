@@ -64,14 +64,6 @@ export class Order {
         this.total = this.calculateTotal()
     }
 
-    public addProductsOrder = (newProductsOrder: IOrderItem) => {
-        this.productsOrder.push(newProductsOrder)
-    }
-
-    public removeProductsOrder = (idToRemove: string) => {
-        return this.productsOrder.filter(IOrderItem => IOrderItem.id !== idToRemove)
-    }
-
     public getTotal = () => {
         return this.total
     }
@@ -82,14 +74,13 @@ export interface ICreateOrderInputDTO {
     userName: string
     deliveryDate: Date
     products: {
-        name: string,
+        id: number,
         quantity: number
     }[]
 }
 
 export interface ICreateOrderOutputDTO {
-    message: string,
-    order: IOrderResume
+    message: string
 }
 
 export interface IGetOrdersOutputDTO {

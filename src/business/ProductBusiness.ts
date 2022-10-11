@@ -12,7 +12,7 @@ export class ProductBusiness {
 
         const products: Product[] = []
 
-        for (let productDB of productsDB) {
+         for (let productDB of productsDB) {
             const product = new Product(
                 productDB.id,
                 productDB.name,
@@ -26,14 +26,12 @@ export class ProductBusiness {
         const response: IGetProductsOutputDTO = {
             message: "Produtos renderizados com sucesso!",
             products: products.map((product) => ({
+                id: product.getId(),
                 name: product.getName(),
                 price: product.getPrice(),
                 qty_stock: product.getQtyStock()
-
             }))
         }
-
-
         return response
     }
 
