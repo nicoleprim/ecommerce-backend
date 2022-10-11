@@ -15,20 +15,20 @@ export class OrderDatabase extends BaseDatabase {
             })
     }
 
-    public getQuantity = async (name: string): Promise<number> => {
+    public getQuantity = async (id: number): Promise<number> => {
         const result: any[] = await BaseDatabase
             .connection(ProductDatabase.TABLE_PRODUCTS)
             .select("qty_stock")
-            .where({ name: name })
+            .where({ id: id })
     
         return result[0].qty_stock as number
     }
 
-    public getPrice = async (name: string): Promise<number> => {
+    public getPrice = async (id: number): Promise<number> => {
         const result: any[] = await BaseDatabase
             .connection(ProductDatabase.TABLE_PRODUCTS)
             .select("price")
-            .where({ name: name })
+            .where({ id: id })
     
         return result[0].price as number
     }

@@ -102,6 +102,29 @@ describe("Testando a OrderBusiness", () => {
         }
     })
 
+    test("Erro quando a quantidade solicitada for maior que a do estoque", async () => {
+        expect.assertions(0)
+
+        try {
+            const input = {
+                userName: "cliente",
+                deliveryDate: '2022/10/20',
+                products: [{
+                    name:'DESODORANTE AEROSOL NIVEA BLACK&WHITE INVISIBLE MASCULINO 150ML',
+                    quantity: 180
+                }]
+            } as any
+
+            await orderBusiness.createOrder(input)
+
+        } catch (error) {
+            if (error instanceof BaseError) {
+                expect(error.statusCode).toBe(400)
+                expect(error.message).toBe(`Não existe produto em estoque. Temos 171 produtos em estoque`)
+            }
+        }
+    })
+
     test("Erro quando 'userName' for diferente de string", async () => {
         expect.assertions(2)
 
