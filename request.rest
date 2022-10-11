@@ -6,12 +6,12 @@ POST http://localhost:3003/orders/createorder
 Content-Type: application/json
 
 {
-    "userName": "Le",
-    "deliveryDate": "2022/12/22",
+    "userName": "ILena",
+    "deliveryDate": "2022/12/11",
     "products": [
         {
             "name": "BEBIDA ENERGÉTICA VIBE 2L",
-            "quantity": 1
+            "quantity": 620
         }
     ]
 }

@@ -55,13 +55,9 @@ export class OrderBusiness {
 
         for (let product of productsVerify) {
             const idProduct = await this.orderDatabase.getId(product.name)
-
-            product.id = idProduct
-        }
-
-        for (let product of productsVerify) {
             const price = await this.orderDatabase.getPrice(product.id)
 
+            product.id = idProduct
             product.price = price
         }
 
@@ -69,7 +65,7 @@ export class OrderBusiness {
             const qty = await this.orderDatabase.getQuantity(product.id)
 
             if (qty < product.quantity || !qty) {
-               throw new Error(`Não existe produto em estoque. Temos ${qty} produtos em estoque`)
+                throw new ParamsError(`Não existe produto em estoque. Temos ${qty} produtos disponíveis para compra`)
             }
         }
 
