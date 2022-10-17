@@ -33,11 +33,11 @@ export class OrderBusiness {
             throw new ParamsError("Parâmetro 'nome' inválido")
         }
 
+        const today = new Date()
+        const minimunDate = new Date(today.setDate(today.getDate() + 3))
         const dateVerify = new Date(deliveryDate)
-        const difDays = Math.abs(new Date().getTime() - dateVerify.getTime())
-        const days = Math.ceil(difDays / (86400000))
 
-        if (days <= 3 || dateVerify < new Date()) {
+        if(dateVerify < minimunDate) {
             throw new ParamsError("Informe uma data futura. Conseguimos realizar a entrega a partir de 03 dias após a realização do pedido")
         }
 

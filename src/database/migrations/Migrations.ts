@@ -9,9 +9,9 @@ class Migrations extends BaseDatabase {
         try {
             const createTables = async () => {
                 await BaseDatabase.connection.raw(`
+                DROP TABLE IF EXISTS ${ProductOrderDatabase.TABLE_PRODUCTS_ORDERS};
                 DROP TABLE IF EXISTS ${ProductDatabase.TABLE_PRODUCTS};
                 DROP TABLE IF EXISTS ${OrderDatabase.TABLE_ORDERS};
-                DROP TABLE IF EXISTS products_orders_shopper;
                                 
                 CREATE TABLE IF NOT EXISTS ${ProductDatabase.TABLE_PRODUCTS}(
                 id INT PRIMARY KEY,
