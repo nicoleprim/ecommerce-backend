@@ -1,4 +1,3 @@
-import { Console } from "console"
 import { OrderBusiness } from "../src/business/OrderBusiness"
 import { BaseError } from "../src/errors/BaseError"
 import { ICreateOrderInputDTO, Order } from "../src/models/Order"
@@ -6,6 +5,9 @@ import { IdGeneratorMock } from "./mocks/idGeneratorMock"
 import { OrderDatabaseMock } from "./mocks/OrderDatabaseMock"
 import { ProductDatabaseMock } from "./mocks/ProductDatabaseMock"
 import { ProductOrderDatabaseMock } from "./mocks/ProductOrderDatabaseMock"
+
+const date = new Date()
+const futureDate = new Date(date.setDate(date.getDate() + 5))
 
 describe("Testando a OrderBusiness", () => {
     const orderBusiness = new OrderBusiness(
@@ -24,7 +26,7 @@ describe("Testando a OrderBusiness", () => {
     test("Deve ser possível criar um novo pedido", async () => {
         const input: ICreateOrderInputDTO = {
             userName: "Theodoro",
-            deliveryDate: new Date("2022-10-20"),
+            deliveryDate: futureDate,
             products: [
                 {
                     id: 18,
@@ -44,7 +46,7 @@ describe("Testando a OrderBusiness", () => {
         try {
             const input = {
                 userName: "",
-                deliveryDate: new Date('2022/12/09'),
+                deliveryDate: futureDate,
                 products: [{
                     id: 94,
                     quantity: 2
@@ -68,7 +70,7 @@ describe("Testando a OrderBusiness", () => {
         try {
             const input = {
                 userName: "nome do cliente",
-                deliveryDate: new Date('2022/12/09'),
+                deliveryDate: futureDate,
                 products: []
             }
             await orderBusiness.createOrder(input)
@@ -87,7 +89,7 @@ describe("Testando a OrderBusiness", () => {
         try {
             const input = {
                 userName: 123,
-                deliveryDate: '2022/10/10',
+                deliveryDate: futureDate,
                 products: [{
                     id: 95,
                     quantity: 5
@@ -110,7 +112,7 @@ describe("Testando a OrderBusiness", () => {
         try {
             const input = {
                 userName: "nome do usuário",
-                deliveryDate: new Date('2022/10/07'),
+                deliveryDate: new Date('2022/10/10'),
                 products: [{
                     id: 95,
                     quantity: 5
